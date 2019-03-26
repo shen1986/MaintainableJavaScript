@@ -23,6 +23,9 @@
         + [构造函数](#构造函数)
     - [直接量](#直接量)
         + [字符串](#字符串)
+        + [数字](#数字)
+        + [null](#null)
+        + [undefined](#undefined)
 
 ### 缩进层级
 
@@ -221,7 +224,7 @@ if (wl && wl.length) {
 ```javascript
 // 好的写法
 var count = 10;
-var myName = "Nicholas";
+var myName = "shenxf";
 var found = true;
 
 // 不好的写法: 变量看起来像函数
@@ -259,7 +262,7 @@ set | 函数用来保存一个值
 ```javascript
 
 if (isEnabled()) {
-    setName("Shenxf");
+    setName("shenxf");
 }
 
 if (getName() === "shenxf") {
@@ -291,7 +294,7 @@ if (count < MAX_COUNT) {
 
 #### 构造函数
 
-- 够着函数遵照大驼峰命名法。主要是为了和函数与变量的命名法进行区分。
+- 构造函数遵照大驼峰命名法。主要是为了和函数与变量的命名法进行区分。
 
 ```javascript
 // 好的做法
@@ -333,7 +336,7 @@ var name = 'shenxf says, "Hi."';
 ```
 
 - 书的作者经常使用Java，Java是用双引号来表示字符串。所以作者推荐使用双引号，因为可以和Java语言保持一致。
-- 我个人推荐使用单引号，本人之前使用的很多编码规范插件都是以单引号来声明变量的。我已经习惯了，所以我推荐使用单引号。
+- 我个人推荐使用单引号，本人之前使用的很多编码规范插件都是以单引号来声明变量的。我已经习惯了，所以我推荐使用单引号。不管使用哪一种，自己的代码风格保持一致我觉得就可以了。
 
 - 当字符串换行的时候，应该使用运算符来连接。
 
@@ -347,6 +350,128 @@ var longString = "Here's the story, of a man" +
                  "named Brady.";
 ```
 
+[返回顶部](#编程风格)
+
+#### 数字
+
+- 直接给列子
+
+```javascript
+// 整数
+var count = 10;
+
+// 小数
+var price = 10.0;
+var price = 10.00;
+
+// 不推荐小数的写法：没有小数部分
+var pricee = 10.;
+
+// 不推荐小数的写法：没有整数部分
+var price = .1;
+
+// 不推荐的写法：八进制写法已经被弃用
+var num = 010;
+
+// 十六进制写法
+var num = 0xA2;
+
+// 科学计数法
+var num = 1e23;
+```
+
+- 不推荐写法的前两个感觉特别变扭，不知道是刻意写的还是漏掉的。为了避免歧义，所以不推荐。
+- 八进制的写法也很容易产生歧义，很有可能被认为是整数`10`，其实是`8`,所以不推荐。
+
+[返回顶部](#编程风格)
+
+#### null
+
+- null比较特殊经常和undefined混淆。
+
+- 应该使用null的场景
+    + 用来初始化一个变量，这个变量可能被赋值为一个对象
+    + 用来好一个已经初始化的变量比较，这个变量可以使也可以不是一个对象
+    + 当函数的参数期望是对象时，用作参数传入
+    + 当函数的返回值期望是对象时，用作返回值传出
+- 不应该使用null的场景
+    + 不要使用null来检测是否传入了某个参数
+    + 不要用null来检测一个未初始化的变量
+
+- 例子
+
+```javascript
+
+// 好的用法
+var person = null;
+
+// 好的用法
+function getPerson() {
+    if (condition) {
+        return new Person("shenxf");
+    } else {
+        return null;
+    }
+}
+
+// 好的用法
+var person = getPerson();
+if (person !== null) {
+    doSomething();
+}
+
+// 不好的写法：用来和未初始化的变量进行比较
+var person;
+if (person != null) {
+    doSomething();
+}
+
+// 不好的写法：检测是否传入了参数
+function doSomething(arg1, arg2, arg3, arg4) {
+    if (arg4 != null) {
+        doSomethingElse();
+    }
+}
+```
+
+- 理解`null`最好的方法是把它理解成一个占位符
+
+
+[返回顶部](#编程风格)
+
+#### undefined
+
+- 最让人困惑的是 `null == undefined` 的结果是`true`,然而，这2个值的用法各不相同。
+- 那些没有被初始化的变量都有一个初始值，即`undefined`,表示这个变量等待被赋值。
+
+```javascript
+// 不好的写法
+var person;
+console.log(person === undefined); //true
+```
+
+- 虽然这是正常的代码，但是我们应该经量避免`undefined`.
+- 因为`undefined`有很多让人费解的地方，比如`typeof`
+
+```javascript
+// foo未被声明
+var person;
+console.log(typeof person); // "undefined"
+console.log(typeof foo);    // "undefined"
+```
+
+- 这段代码看似没什么，但是在某些场景下面又天壤之别（在语句中foo会报错，而person则不会）
+
+- 通过禁止使用特殊值`undefined`,可以使得`typeof`出来的结果只有一种可能出现undefined。那就是
+变量未声明的时候。
+
+```javascript
+// 好的做法
+var person = null;
+console.log(person === null); // true
+```
+
+- `typeof null`值返回的是`Object`,这样可以避开`undefined`,这样就区分开了。
 
 [返回顶部](#编程风格)
 
