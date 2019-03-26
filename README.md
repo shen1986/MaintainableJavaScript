@@ -7,6 +7,7 @@
 
 边看书边做笔记，这个仓库主要是参照《编写可维护的JavaScript》这本书，来总结自己的学习笔记。
 只是自己的总结，和书本不一样，如果觉得不错，你可以购买这本书自己研究。
+我写这篇东西也不容易，如果感觉不错，请点`Star`,谢谢大家。
 
 ## 编程风格
 
@@ -436,7 +437,6 @@ function doSomething(arg1, arg2, arg3, arg4) {
 
 - 理解`null`最好的方法是把它理解成一个占位符
 
-
 [返回顶部](#编程风格)
 
 #### undefined
@@ -460,9 +460,8 @@ console.log(typeof person); // "undefined"
 console.log(typeof foo);    // "undefined"
 ```
 
-- 这段代码看似没什么，但是在某些场景下面又天壤之别（在语句中foo会报错，而person则不会）
-
-- 通过禁止使用特殊值`undefined`,可以使得`typeof`出来的结果只有一种可能出现undefined。那就是
+- 这段代码看似没什么，但是在某些场景下面有天壤之别（在语句中foo会报错，而person则不会）
+- 通过禁止使用特殊值`undefined`,可以使得`typeof`出来的结果只有一种可能出现`undefined`。那就是
 变量未声明的时候。
 
 ```javascript
