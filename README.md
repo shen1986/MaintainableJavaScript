@@ -27,6 +27,12 @@
         + [数字](#数字)
         + [null](#null)
         + [undefined](#undefined)
+        + [对象直接量](#对象直接量)
+        + [数组直接量](#数组直接量)
+
+2. 注释
+
+    - [单行注释](#单行注释)
 
 ### 缩进层级
 
@@ -471,6 +477,104 @@ console.log(person === null); // true
 ```
 
 - `typeof null`值返回的是`Object`,这样可以避开`undefined`,这样就区分开了。
+
+[返回顶部](#编程风格)
+
+#### 对象直接量
+
+- 有直接量的东西，最好不要先创建然后再赋值。
+
+```javascript
+// 不好的写法
+var book = new Object();
+book.title = "shenxfsbook";
+book.author = "shenxf";
+```
+
+- 直接量可以高效的完成非直接量相同的任务。
+- 当定义直接量的时候，第一行包含左花括号，每一个属性的名值对都独占一行，并保持一个缩进，最后花括号也独占一行
+
+```javascript
+// 好的写法
+var book = {
+    title: "shenxfsbook",
+    author: "shenxf"
+};
+```
+
+[返回顶部](#编程风格)
+
+#### 数组直接量
+
+- 和对象的直接量类似，不建议使用非直接量。
+
+```javascript
+// 不好的写法
+var colors = new Array("red", "green", "blue");
+var numbers = new Array(1, 2, 3, 4);
+
+// 好的写法
+var colors = ["red", "green", "blue"];
+var numbers = [1, 2, 3, 4];
+```
+
+[返回顶部](#编程风格)
+
+### 单行注释
+
+```javascript
+// 这是一句单行注释
+```
+
+- 双斜杠后面最好预留一个空格
+- 单行注释 有3中使用方法
+    + 独占一行注释，用来解释下一行代码，这行注释之前总是有一个空行，且缩进层级和下一行代码保持一致
+    + 在代码行的尾部的注释。代码结束到注释之间至少有一个缩进。注释（包括之前的代码部分）不应当超过单行的最大字符数限制，如果超过了，就应该将这行注释放在代码行上方。
+    + 被注释掉的大段代码（编译器自带的批量注释多行代码）
+
+- 单行注释不应该用于多行，除非是注释的大段代码。
+
+```javascript
+// 好的写法
+if (condition) {
+
+    // 如果代码执行到这里，则表示通过了左右的安全性检查
+    allowed();
+}
+
+// 不好的写法：注释之前没有空行
+if (condition) {
+    // 如果代码执行到这里，则表示通过了左右的安全性检查
+    allowed();
+}
+
+// 不好的写法：错误的缩进
+if (condition) {
+// 如果代码执行到这里，则表示通过了左右的安全性检查
+    allowed();
+}
+
+// 好的写法
+var result = something + somethingElse; // somethingElse不应当取值为null
+
+// 不好的写法：代码和注释之间没有间隔
+var result = something + somethingElse;// somethingElse不应当取值为null
+
+// 好的写法
+// if (condition) {
+//     dosomething();
+//     thenDoSomethingElse();
+// }
+
+// 不好的写法:这里应当用多行注释
+// 接下来的这段代码非常难，那么，让我详细的解释下
+// 这段代码首先判断条件是否为真
+// 。。。。。。。
+if (condition) {
+    // 如果代码执行到这里，则表示通过了左右的安全性检查
+    allowed();
+}
+```
 
 [返回顶部](#编程风格)
 
