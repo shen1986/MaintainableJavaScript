@@ -33,6 +33,9 @@
 2. 注释
 
     - [单行注释](#单行注释)
+    - [多行注释](#多行注释)
+    - [使用注释](#使用注释)
+        + [难以理解的代码](#难以理解的代码)
 
 ### 缩进层级
 
@@ -573,6 +576,138 @@ var result = something + somethingElse;// somethingElse不应当取值为null
 if (condition) {
     // 如果代码执行到这里，则表示通过了左右的安全性检查
     allowed();
+}
+```
+
+[返回顶部](#编程风格)
+
+### 多行注释
+
+- 合法的多行注释
+
+```javascript
+/* 我的注释 */
+/* 另一段注释
+这个注释包含2行 */
+/*
+又是一段注释
+这段注释同样包含2行
+*/
+```
+
+- 这些注释都是合法但是看得不清晰，推荐使用类似于java的注释方法
+- 第一是`/*`,最后一样是`*/`，当中每一行都以`*`开头，且空开一个空格
+
+```javascript
+/*
+ * 另一段注释
+ * 这个注释包含2行
+ */
+```
+
+- 多行注释应该和单行注释一样注释之前要有空行，注释用来说明下面行的代码，并与下一行保持同样的缩进
+
+```javascript
+// 好的写法
+if (condition) {
+
+    /*
+     * 如果代码执行到这里
+     * 说明通过了所有安全性检查
+     */
+    allowed();
+}
+
+// 不好的写法：注释之前无空行
+if (condition) {
+    /*
+     * 如果代码执行到这里
+     * 说明通过了所有安全性检查
+     */
+    allowed();
+}
+
+// 不好的写法：星号之后没有空格
+if (condition) {
+    /*
+     *如果代码执行到这里
+     *说明通过了所有安全性检查
+     */
+    allowed();
+}
+
+// 不好的写法：错误的缩进
+if (condition) {
+/*
+ * 如果代码执行到这里
+ * 说明通过了所有安全性检查
+ */
+    allowed();
+}
+
+// 不好的写法：代码尾部不要用多行注释
+var result = something + somethingElse; /*somethingElse不应当取值为null*/
+```
+
+[返回顶部](#编程风格)
+
+### 使用注释
+
+- 代码不够清晰时应该添加注释，代码很明了的时候不应该添加注释，有点画蛇添足。
+
+```javascript
+// 不好的写法：注释并没有提供有价值的信息
+
+// 初始化count
+var count = 10;
+
+// 好的写法
+
+// 改变这个值可能会使它变成青蛙
+var count = 10;
+```
+
+- 因此，添加注释的原则是需要让代码变的更清晰的时候。
+
+[返回顶部](#编程风格)
+
+#### 难以理解的代码
+
+- 难以理解的代码应该添加注释
+
+```javascript
+// 好的写法
+
+if (mode) {
+
+    /*
+     * 当 mode 为2时
+     * 用来执行原型合并的操作。。。。
+     * 。。。。
+     */
+    if (mode === 2) {
+        Y.mix(receiver.prototype, supplier.prototype, overwrite,
+            whitelis, 0, merge);
+    }
+
+     /*
+      * 根据模式的类型。。。
+      * 。。。。
+      */
+    from = mode === 1 || mode === 3 ? supplier.prototype : supperlier;
+    to   = mode === 1 || mode === 4 ? receiver.prototype : receiver;
+
+    /*
+     * .......
+     * ......
+     */
+    if (!from || !to) {
+        from = supperlier;
+        to   = receiver;
+    }
+} else {
+    from = supplier;
+    to = receiver;
 }
 ```
 
