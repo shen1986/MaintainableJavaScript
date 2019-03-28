@@ -596,7 +596,7 @@ if (condition) {
 ```
 
 - 这些注释都是合法但是看得不清晰，推荐使用类似于java的注释方法
-- 第一是`/*`,最后一样是`*/`，当中每一行都以`*`开头，且空开一个空格
+- 第一是`/*`,最后一行是`*/`，当中每一行都以`*`开头，且空开一个空格
 
 ```javascript
 /*
@@ -687,7 +687,7 @@ if (mode) {
      */
     if (mode === 2) {
         Y.mix(receiver.prototype, supplier.prototype, overwrite,
-            whitelis, 0, merge);
+                whitelis, 0, merge);
     }
 
      /*
