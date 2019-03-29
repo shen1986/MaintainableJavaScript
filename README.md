@@ -7,7 +7,8 @@
 
 边看书边做笔记，这个仓库主要是参照《编写可维护的JavaScript》这本书，来总结自己的学习笔记。
 只是自己的总结，和书本不一样，如果觉得不错，你可以购买这本书自己研究。书本还涉及到JSLint，JSHint
-中的区别。各种组织或公司的代码风格，并进行比较以及总结。我自己的总结没有这些东西。
+中的区别。实例代码从哪里取材，各种组织或公司的代码风格，并进行比较以及总结。对于某些写法的观点有时有些模棱两可，我自己的总结没有这些东西，更偏向与自己怎么写。
+
 最后，我写这篇东西也不容易，如果感觉不错，请点`Star`,谢谢大家。
 
 ## 编程风格
@@ -37,6 +38,9 @@
     - [多行注释](#多行注释)
     - [使用注释](#使用注释)
         + [难以理解的代码](#难以理解的代码)
+        + [可能被误认为错误的代码](#可能被误认为错误的代码)
+        + [游览器特性hack](#游览器特性hack)
+    - [文档注释](#文档注释)
 
 ### 缩进层级
 
@@ -711,6 +715,93 @@ if (mode) {
     to = receiver;
 }
 ```
+
+[返回顶部](#编程风格)
+
+#### 可能被误认为错误的代码
+
+- 团队里面会有一些好心人，自主的把一个看上去错误代码改正，但是这段错误的往往并不是错误的源头
+- 修改了这段代码会导致另外的bug
+
+```javascript
+while (element && (element = element[asix])) { // 赋值操作
+    if( (all || element[TAG_NAME]) &&
+        (!fn || fn(element)) ) {
+        
+        return element;
+    }
+}
+```
+
+- 在这里例子里面作者写明了他是赋值操作，虽然这不是一种标准用法，检测工具可能会检测出问题
+- 很容易被误解成一个错误。这种注释就表明作者是有意为之。从而避免了不必要的误解。
+
+[返回顶部](#编程风格)
+
+#### 游览器特性hack
+
+- 为了要兼容低版本的游览器，JavaScript程序员往往会写一些“可能被误认为错误的代码“。
+
+```javascript
+var ret = false;
+
+if ( !needle || !element || !needle[NODE_TYPE] || !element[NODE_TYPE]) {
+    ret = false;
+} else if (element[CONTAINS]) {
+    // 如果needle不是ELEMENT_NODE时，IE和Safari下会有错误
+    if (Y.UA.opera || needle[NODE_TYPE] === 1) {
+        ret = element[CONTAINS](needle);
+    } else {
+        ret = Y_DOM._bruteContains(element, needle);
+    }
+} else if (element[COMPARE_DOCUMENT_POSITION]) { // gecko
+    if (element === needle || !!(element[COMPARE_DOCUMENT_POSITION](needle) & 16)) {
+        ret = true
+    }
+}
+```
+
+- 第六行有一段重要的注释，尽管IE和Safari中都有内置的方法contains(),但是needle不是一个元素是，这个方法会报错
+- 所以只有当浏览器是Opera的时候才能用这个方法。这里说明了为什么要一个if语句。这样不会被别人误改动，而且以后浏览器要做相应的兼容性改动是也能快速的定位到这段代码，对自己的维护也是有好处的。
+
+[返回顶部](#编程风格)
+
+### 文档注释
+
+- 虽然不是JavaScript的组成部分但是现在广泛的被运用，一般文档注释有多种格式，最流行的是源于JavaDoc文档格式：
+    + 多行注释以单斜线双星号`/**`开始，接下来是描述信息，其中`@`符号来表示一个或多个属性。
+
+```javascript
+/**
+返回一个对象，这个对象包含被提供对象的所有属性。
+后一个对象的属性会覆盖前一个对象的属性。
+传入一个单独对象。。。。
+@method merge
+@param {Object} 被合并的一个或多个对象
+@param {Object} 一个新的合并后的对象
+**/
+Y.merge = function() {
+    var args    = arguments,
+        i       = 0,
+        len     = args.length,
+        result  = {};
+    
+    for (; i<len; ++i) {
+        Y.mix(result, args[i], true);
+    }
+
+    return result;
+};
+```
+
+- 你应当确保对如下的内容添加注释
+    + 所有的方法
+        * 应当对方法，期望的参数和可能的返回值添加注释描述。
+    + 所有的构造函数
+        * 应当对自定义类型和期望的参数添加注释描述。
+    + 所有包含文档化方法的对象
+        * 如果一个对象包含一个或多个附带文档注释的方法，那么这个对象也应当适当地针对文档生成工具添加文档注释。
+        * 当然，注释的详细格式和用法最终还是由你所选择的文档生成工具决定的。
 
 [返回顶部](#编程风格)
 
