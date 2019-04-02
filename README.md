@@ -46,6 +46,10 @@
 
     - [花括号的对齐方式](#花括号的对齐方式)
     - [块语句的间隔](#块语句的间隔)
+    - [switch语句](#switch语句)
+        + [缩进](#缩进)
+        + [case语句的“连续执行”](#case语句的“连续执行”)
+        + [default](#default)
 
 ### 缩进层级
 
@@ -230,7 +234,7 @@ if (wl && wl.length) {
 
 ### 命名
 
-- JavaScript语言核心是EXMAScript，遵照了驼峰式大小写命名法（这个太有名了我就不解释了）
+- JavaScript语言核心是ECMAScript，遵照了驼峰式大小写命名法（这个太有名了我就不解释了）
 - 一般是遵循语言核心所采用的命名规范，因此大部分JavaScript程序员使用驼峰命名法给变量和函数命名。
 
 
@@ -866,6 +870,124 @@ Y.merge = function() {
     ```
 
     + 本人和书的作者一样比较推荐第二种风格。
+
+[返回顶部](#编程风格)
+
+### switch语句
+
+- JavaScript中的`switch`语句的行为和在其他语言中是不一样的：switch语句中可以使用任意类型值，任何表达式都可合法地用于case从句。但在其他语言中则必须使用原始值和常量。
+
+[返回顶部](#编程风格)
+
+#### 缩进
+
+- 很多人用java的风格
+```javascript
+    switch(condition) {
+        case "first":
+            // 代码
+            break;
+
+        case "second":
+            // 代码
+            break;
+
+        case "third":
+            // 代码
+            break;
+        
+        default:
+            // 代码
+    }
+```
+
+- 独特之处
+    + 每条`case`语句相对于`switch`关键字都缩进一个层级。
+    + 从第二条豫剧开始，每条`case`语句前后各有一个空行。
+
+- 另一种风格
+```javascript
+    switch(condition) {
+    case "first":
+        // 代码
+        break;
+    case "second":
+        // 代码
+        break;
+    case "third":
+        // 代码
+        break;
+    default:
+        // 代码
+    }
+```
+- 不同之处是`case`关键字与`switch`保持左对齐，
+
+- 我和作者都喜欢java的风格。
+
+[返回顶部](#编程风格)
+
+#### case语句的“连续执行”
+
+- `case`后面不加`break`，就会连续执行下面的条件，这个成为很多系统bug的原罪。
+- 但是还是有许多人接受这种连续执行的编程方法。但是逻辑一定要写的清晰。
+```javascript
+    switch(condition) {
+
+        // 明显的依次执行
+        case "first":
+        case "second":
+            // 代码
+            break;
+
+        case "third":
+            // 代码
+            
+            /* fall through */
+        default:
+            // 代码
+    }
+```
+- 前面2行代码是个很明显的连续执行，这是合理的。
+- `third`里面由于添加了注释，说明这是有意为之。这也是合理的。
+
+[返回顶部](#编程风格)
+
+#### default
+
+- 比较有争论的议题是，是否需要`default`，很多人不论何时都不省略`default`，尽管它什么也不做。
+```javascript
+    switch(condition) {
+        case "first":
+            // 代码
+            break;
+
+        case "second":
+            // 代码
+            break;
+
+        default:
+            // default中没有逻辑
+    }
+```
+
+- 作者比较倾向于，没有默认行为，并且写了注释的情况下可以省略
+```javascript
+    switch(condition) {
+        case "first":
+            // 代码
+            break;
+
+        case "second":
+            // 代码
+            break;
+
+        // 没有 default
+    }
+```
+- 这样即表明了没有默认行为，又省下了字节。
+
+- 我觉得2中方法都可以，就看你喜欢哪一种。
 
 [返回顶部](#编程风格)
 
