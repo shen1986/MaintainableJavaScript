@@ -1050,7 +1050,7 @@ with (book) {
     var values = [ 1, 2, 3, 4, 5, 6, 7],
         i, len;
     for (i=0, len=values.length; i < len; i++) {
-        if (! != 2) {
+        if (i !== 2) {
             process(values[i]);
         }
     }
