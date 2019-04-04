@@ -52,6 +52,7 @@
         + [default](#default)
     - [with语句](#with语句)
     - [for循环](#for循环)
+    - [for-in循环](#for-in循环)
 
 ### 缩进层级
 
@@ -1056,6 +1057,46 @@ with (book) {
     }
 ```
 - 书的作者没有明确表态，我认为这个不至于，想用还是可以用的。这个语句本身是没有问题的。
+
+[返回顶部](#编程风格)
+
+### for-in循环
+
+- 相信大家都会用。for-in循环不仅仅遍历对象的实例属性，从原型链继承来的属性也会遍历。当遍历自定义对象的属性时往往会因为意外的结果而终止。因此，最好使用`hasOwnProperty()`方法来为for-in循环过滤出实例属性。
+
+```javascript
+var prop;
+
+for (prop in object) {
+    if (object.hasOwnProperty(prop)) {
+        console.log("Property name is " + prop);
+        console.log("Property value is " + object[prop]);
+    }
+}
+```
+
+- 一般都会加上`hasOwnProperty`，但是如果你就是想查找原型链，请加上注释。
+
+```javascript
+var prop;
+
+for (prop in object) { // 包含对原型链的遍历
+    console.log("Property name is " + prop);
+    console.log("Property value is " + object[prop]);
+}
+```
+
+- for-in循环是用来遍历对象的，请不要用它来遍历数组。
+
+```javascript
+// 不好的用法
+var values = [ 1, 2, 3, 4, 5 ],
+    i;
+
+for (i in values) {
+    process(item[i]);
+}
+```
 
 [返回顶部](#编程风格)
 
