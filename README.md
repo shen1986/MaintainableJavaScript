@@ -54,6 +54,10 @@
     - [for循环](#for循环)
     - [for-in循环](#for-in循环)
 
+4. 变量、函数和运算符
+
+    - [变量声明](#变量声明)
+
 ### 缩进层级
 
 - 缩进层级非常重要，弄的不好，容易造成很多误解。
@@ -1097,6 +1101,37 @@ for (i in values) {
     process(item[i]);
 }
 ```
+
+[返回顶部](#编程风格)
+
+
+### 变量声明
+
+- 声明会被提升到当前作用域顶部。
+
+```javascript
+function doSomething() {
+    
+    var result = 10 + value;
+    var value = 10;
+    return result;
+}
+```
+- 上面代码的理解
+```javascript
+function doSomething() {
+    var result;
+    var value
+
+    result = 10 + value;
+    value = 10;
+
+    return result;
+}
+```
+- 这个函数得出的结果是NaN值。 
+
+
 
 [返回顶部](#编程风格)
 
