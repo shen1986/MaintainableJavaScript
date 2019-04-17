@@ -57,6 +57,7 @@
 4. 变量、函数和运算符
 
     - [变量声明](#变量声明)
+    - [函数声明](#函数声明)
 
 ### 缩进层级
 
@@ -1131,7 +1132,74 @@ function doSomething() {
 ```
 - 这个函数得出的结果是NaN值。 
 
+- 作者倾向的风格,把所有定义放在作用域开始部分，用逗号分隔，可以节省写`var`的字节。
+```javascript
+    function doSomethingWithItems(items) {
 
+        var value = 10,
+            result = value + 10,
+            i,
+            len;
+        
+        for (i=0, len=items.length; i < len; i++) {
+            doSomething(items[i]);
+        }
+    }
+```
+
+[返回顶部](#编程风格)
+
+### 函数声明
+
+- 函数声明也会被javaScript引擎提前。
+```javascript
+    // 不好的写法
+    doSomething();
+
+    function doSomething() {
+        alert('Hello world!');
+    }
+```
+- javaScript会把代码解释为
+```javascript
+    function doSomething() {
+        alert('Hello world!');
+    }
+
+    doSomething();
+```
+- 我们应该先声明函数再使用
+```javascript
+    function doSomethingWithItems(items) {
+
+        var i,len,
+            value = 10,
+            result = value + 10;
+        
+        function doSomething(item) {
+            // 代码逻辑
+        }
+
+        for (i=0, len=items.length; i < len; i++) {
+            doSomething(items[i]);
+        }
+    }
+```
+-- 另外，函数不应该出现在语句块之内。
+```javascript
+
+    // 不好的写法
+    if (condition) {
+        function doSomething() {
+            alert('hi');
+        }
+    } else {
+        function doSomething() {
+            alert('Yo');
+        }
+    }
+```
+- 因为函数的声明会被提前，所以不管这里的条件满足与否，第二个同名的函数会把第一个函数覆盖。所以上面的代码不会按照我们的意图来执行。
 
 [返回顶部](#编程风格)
 
