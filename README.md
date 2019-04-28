@@ -1248,7 +1248,7 @@ function doSomething() {
         return {
             message: "Hi"
         }
-    });
+    }());
 ```
 
 [返回顶部](#编程风格)
