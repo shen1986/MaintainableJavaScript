@@ -60,6 +60,7 @@
     - [函数声明](#函数声明)
     - [函数调用间隔](#函数调用间隔)
     - [立即调用的函数](#立即调用的函数)
+    - [严格模式](#严格模式)
 
 ### 缩进层级
 
@@ -1250,6 +1251,44 @@ function doSomething() {
         }
     }());
 ```
+
+[返回顶部](#编程风格)
+
+### 严格模式
+- `use strict`
+
+```javascript
+    // 不好的写法 - 全局严格模式
+    "use strict"
+    function doSomething() {
+        // 代码
+    }
+
+    // 好的写法
+    function doSomething() {
+        "use strict"
+        // 代码
+    }
+```
+
+- 如果希望在多个函数中应用严格模式而不必谢很多行的话，可以使用立即执行函数
+
+```javascript
+    // 好的写法
+    (function() {
+        "use strict"
+        function doSomething() {
+            // 代码
+        }
+        function doSomethingElse() {
+            // 代码
+        }
+    })();
+```
+
+- 为什么不要全局使用严格模式？
+    + 全局使用严格模式的情况下，其他文件中的（非严格模式下的）代码很可能会报错。
+
 
 [返回顶部](#编程风格)
 
