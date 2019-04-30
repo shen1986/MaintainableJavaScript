@@ -61,6 +61,7 @@
     - [函数调用间隔](#函数调用间隔)
     - [立即调用的函数](#立即调用的函数)
     - [严格模式](#严格模式)
+    - [相等](#相等)
 
 ### 缩进层级
 
@@ -1289,6 +1290,91 @@ function doSomething() {
 - 为什么不要全局使用严格模式？
     + 全局使用严格模式的情况下，其他文件中的（非严格模式下的）代码很可能会报错。
 
+
+[返回顶部](#编程风格)
+
+### 相等
+
+- 相等的时候会进行类型转换
+
+```javascript
+
+    // 比较数字5和字符串5
+    console.log(5 == "5"); // true
+
+    // 比较数字25和十六进制的字符串25
+    console.log(25 == "0x19"); // true
+
+```
+
+- 发生强制转换的时候字符串会被转换为数字，类似使用`Number()`转换函数。它能正确转换十六进制的数字。所以第二个表达式是相等的。
+
+- 布尔值和数字比较
+
+```javascript
+    // 数字 1 和 true
+    console.log(1 == true); // true
+
+    // 数字 0 和 false
+    console.log(0 == false); // true
+
+    // 数字 2 和 true
+    console.log(2 == true); // false
+```
+- 如果其中一个是对象另一个不是，则会先调用`valueOf()`方法得到原始类型再进行比较，如果没有`valueOf()`，则调用`toString()`。
+```javascript
+    var object = {
+        toString: function() {
+            return "0x19";
+        }
+    };
+
+    console.log(object == 25); // true
+```
+
+- 根据ECMAScript标准规范的描述,`null`和`undefined`是相等的。
+```javascript
+    console.log(null == undefined); // true
+```
+
+- 由于以上强制类型转换的原因，推荐不要使用`==`和`!=`，应当使用`===`和`!==`,它们不会类型转换只要类型不一样就返回`false`
+
+```javascript
+
+    // 比较数字5和字符串5
+    console.log(5 == "5"); // true
+    console.log(5 === "5"); // false
+
+    // 比较数字25和十六进制的字符串25
+    console.log(25 == "0x19"); // true
+    console.log(25 === "0x19"); // false
+
+    // 数字 1 和 true
+    console.log(1 == true); // true
+    console.log(1 === true); // false
+
+    // 数字 0 和 false
+    console.log(0 == false); // true
+    console.log(0 === false); // false
+
+    // 数字 2 和 true
+    console.log(2 == true); // false
+    console.log(2 === true); // false
+
+    var object = {
+        toString: function() {
+            return "0x19";
+        }
+    };
+
+    // 一个对象和25
+    console.log(object == 25); // true
+    console.log(object === 25); // false
+
+    // null和undefined
+    console.log(null == undefined); // true
+    console.log(null === undefined); // false
+```
 
 [返回顶部](#编程风格)
 
